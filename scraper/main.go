@@ -4,23 +4,18 @@ import "fmt"
 import "github.com/gocolly/colly/v2"
 
 func main() {
-	fmt.Println("Hello, World!")
+	fmt.Println("[..] scraping dw.com")
 	c := colly.NewCollector()
 
 	// Find and visit all links
 	c.OnHTML("a[href]", func(e *colly.HTMLElement) {
-		err := e.Request.Visit(e.Attr("href"))
-		if err != nil {
-			return
-		}
+		e.Request.Visit(e.Attr("href"))
 	})
 
 	c.OnRequest(func(r *colly.Request) {
-		fmt.Println("Visiting", r.URL)
+		fmt.Println("[ok] scraping", r.URL)
 	})
 
-	err := c.Visit("http://go-colly.org/")
-	if err != nil {
-		return
-	}
+	c.Visit("https://www.dw.com/de")
+	fmt.Println("[OK] completed scrape of dw.com")
 }
